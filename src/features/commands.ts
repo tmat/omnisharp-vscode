@@ -43,7 +43,8 @@ function pickProjectAndStart(server: OmnisharpServer) {
 		return vscode.window.showQuickPick(targets, {
 			matchOnDescription: true,
 			placeHolder: `Select 1 of ${targets.length} projects`
-		}).then(target => {
+		})
+		.then(target => {
 			if (target) {
 				return server.restart(target.target.fsPath);
 			}
@@ -62,7 +63,8 @@ let lastCommand: Command;
 function dnxExecuteLastCommand(server: OmnisharpServer) {
 	if (lastCommand) {
 		lastCommand.execute();
-	} else {
+	}
+	else {
 		dnxExecuteCommand(server);
 	}
 }
@@ -146,7 +148,7 @@ export function dnxRestoreForAll(server: OmnisharpServer) {
 		});
 
 		return vscode.window.showQuickPick(commands).then(command => {
-			if(command) {
+			if (command) {
 				return command.execute();
 			}
 		});
@@ -156,7 +158,7 @@ export function dnxRestoreForAll(server: OmnisharpServer) {
 export function dnxRestoreForProject(server: OmnisharpServer, fileName: string) {
 
 	return server.makeRequest<proto.WorkspaceInformationResponse>(proto.Projects).then((info):Promise<any> => {
-		for(let project of info.Dnx.Projects) {
+		for (let project of info.Dnx.Projects) {
 			if (project.Path === fileName) {
 				let command = path.join(info.Dnx.RuntimePath, 'bin/dnu');
 				if (isWin) {
@@ -169,7 +171,7 @@ export function dnxRestoreForProject(server: OmnisharpServer, fileName: string) 
 			}
 		}
 
-		return Promise.reject(`Failed to execute restore, try to run 'dnu restore' manually for ${fileName}.`)
+		return Promise.reject(`Failed to execute restore, try to run 'dnu restore' manually for ${fileName}.`);
 	});
 }
 
